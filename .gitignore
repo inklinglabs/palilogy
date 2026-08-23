@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+
+# Artifacts
+*.dmg
+*.pkg
+*.zip
+
+# Secrets and local config
+.env
+*.p12
+*.p8
+*.mobileprovision
+*.provisionprofile
