@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct HelpMeCrondaApp: App {
+struct PalilogyApp: App {
     @State private var appState = AppState()
 
     var body: some Scene {

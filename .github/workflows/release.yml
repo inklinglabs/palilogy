@@ -1,6 +1,6 @@
 # Inkling Labs standard release workflow for Xcode macOS apps.
 # Trigger: Matt pushes a v* tag on main. See dev-standards/STANDARDS.md.
-# Replace HelpMeCronda with the app/scheme name (project-init does this).
+# Replace Palilogy with the app/scheme name (project-init does this).
 #
 # Required repo secrets (canonical names, no exceptions):
 #   APPLE_TEAM_ID, MACOS_CERTIFICATE, MACOS_CERTIFICATE_PWD,
@@ -26,7 +26,7 @@ jobs:
         id: version
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          PLIST=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" HelpMeCronda/Info.plist)
+          PLIST=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" Palilogy/Info.plist)
           if [ "$PLIST" != "$VERSION" ]; then
             echo "Tag $GITHUB_REF_NAME does not match Info.plist version $PLIST" >&2
             exit 1
@@ -53,8 +53,8 @@ jobs:
 
       - name: Build and sign
         run: |
-          xcodebuild -project HelpMeCronda.xcodeproj \
-            -scheme HelpMeCronda \
+          xcodebuild -project Palilogy.xcodeproj \
+            -scheme Palilogy \
             -configuration Release \
             -derivedDataPath build \
             build \
@@ -64,19 +64,19 @@ jobs:
             CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO \
             OTHER_CODE_SIGN_FLAGS="--timestamp --options=runtime"
           codesign --verify --deep --strict --verbose=2 \
-            build/Build/Products/Release/HelpMeCronda.app
+            build/Build/Products/Release/Palilogy.app
 
       - name: Package DMG
         run: |
           STAGING=$(mktemp -d)
-          cp -R build/Build/Products/Release/HelpMeCronda.app "$STAGING/"
+          cp -R build/Build/Products/Release/Palilogy.app "$STAGING/"
           ln -s /Applications "$STAGING/Applications"
           hdiutil create \
-            -volname "HelpMeCronda ${{ steps.version.outputs.version }}" \
+            -volname "Palilogy ${{ steps.version.outputs.version }}" \
             -srcfolder "$STAGING" \
             -fs HFS+ \
             -format UDZO \
-            "HelpMeCronda-${{ steps.version.outputs.version }}.dmg"
+            "Palilogy-${{ steps.version.outputs.version }}.dmg"
 
       - name: Notarize and staple
         env:
@@ -85,21 +85,21 @@ jobs:
           ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
         run: |
           echo "$ASC_API_KEY" | base64 --decode > $RUNNER_TEMP/AuthKey.p8
-          xcrun notarytool submit "HelpMeCronda-${{ steps.version.outputs.version }}.dmg" \
+          xcrun notarytool submit "Palilogy-${{ steps.version.outputs.version }}.dmg" \
             --key $RUNNER_TEMP/AuthKey.p8 \
             --key-id "$ASC_API_KEY_ID" \
             --issuer "$ASC_API_ISSUER_ID" \
             --wait
-          xcrun stapler staple "HelpMeCronda-${{ steps.version.outputs.version }}.dmg"
-          xcrun stapler validate "HelpMeCronda-${{ steps.version.outputs.version }}.dmg"
+          xcrun stapler staple "Palilogy-${{ steps.version.outputs.version }}.dmg"
+          xcrun stapler validate "Palilogy-${{ steps.version.outputs.version }}.dmg"
           rm $RUNNER_TEMP/AuthKey.p8
 
       - name: Create GitHub release
         run: |
           gh release create "$GITHUB_REF_NAME" \
-            "HelpMeCronda-${{ steps.version.outputs.version }}.dmg" \
+            "Palilogy-${{ steps.version.outputs.version }}.dmg" \
             --repo "$GITHUB_REPOSITORY" \
-            --title "HelpMeCronda ${{ steps.version.outputs.version }}" \
+            --title "Palilogy ${{ steps.version.outputs.version }}" \
             --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}

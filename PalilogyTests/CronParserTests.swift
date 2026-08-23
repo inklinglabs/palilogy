@@ -1,5 +1,5 @@
 import Testing
-@testable import HelpMeCronda
+@testable import Palilogy
 
 struct CronParserTests {
     @Test func everyFifteenMinutesBecomesInterval() throws {

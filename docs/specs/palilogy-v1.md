@@ -1,6 +1,6 @@
-# Spec: HelpMeCronda v1
+# Spec: Palilogy v1
 
-**Repo:** help-me-cronda
+**Repo:** palilogy
 **Created:** 2026-08-23
 
 ## 1. Problem
@@ -48,7 +48,7 @@ setting, grouped-form Settings window).
 **Data sources.** Two, merged into one job list:
 
 - `~/Library/LaunchAgents/*.plist`, parsed with `PropertyListDecoder`.
-  Jobs the app created carry a marker key (`HelpMeCrondaManaged: true`) in
+  Jobs the app created carry a marker key (`PalilogyManaged: true`) in
   the plist and are fully editable. Agents the app did not create (foreign
   agents) are enable/disable/delete only; the editor is not offered for
   them, since third-party apps own those files and rewriting them risks
@@ -63,7 +63,7 @@ exit code. Plist writes go to `~/Library/LaunchAgents` followed by a
 bootout/bootstrap cycle so edits take effect immediately.
 
 **Logs.** Jobs the app creates or edits get `StandardOutPath` /
-`StandardErrorPath` pointing at `~/Library/Logs/HelpMeCronda/<label>.out.log`
+`StandardErrorPath` pointing at `~/Library/Logs/Palilogy/<label>.out.log`
 and `.err.log`. The detail pane tails the files. Jobs with their own log
 paths show those instead; jobs with none show an explanatory empty state.
 
@@ -126,10 +126,10 @@ can be represented there.
 ## 7. Scope and Boundaries
 
 **Allowed write paths:**
-- `project.yml`, `HelpMeCronda/` (app source, to be created)
-- `docs/specs/help-me-cronda-v1.md` (this file)
+- `project.yml`, `Palilogy/` (app source, to be created)
+- `docs/specs/palilogy-v1.md` (this file)
 - `CLAUDE.md` (Commands and Architecture sections as they solidify)
-- At runtime: `~/Library/LaunchAgents/`, `~/Library/Logs/HelpMeCronda/`
+- At runtime: `~/Library/LaunchAgents/`, `~/Library/Logs/Palilogy/`
 
 **Read-only context:**
 - `docs/mac-app-styling.md`
@@ -150,8 +150,8 @@ match the names in `.github/workflows/release.yml`.
 
 ```bash
 xcodegen generate
-xcodebuild -project HelpMeCronda.xcodeproj -scheme HelpMeCronda -configuration Debug build
-xcodebuild -project HelpMeCronda.xcodeproj -scheme HelpMeCronda test
+xcodebuild -project Palilogy.xcodeproj -scheme Palilogy -configuration Debug build
+xcodebuild -project Palilogy.xcodeproj -scheme Palilogy test
 ```
 
 Manual pass: create a job that appends `date` to a file every minute, watch
@@ -168,16 +168,16 @@ stops, delete it, confirm the plist is gone.
 
 ## Task Breakdown
 
-- [x] T001 XcodeGen scaffold: `project.yml`, app target HelpMeCronda, bundle ID `com.inklinglabs.helpmecronda`, Swift 6, no sandbox, min macOS version (`project.yml`, `HelpMeCronda/`)
-- [x] T002 Job model + LaunchAgent plist codec with round-trip tests (`HelpMeCronda/Models/`)
-- [x] T003 [P] Cron expression parser to StartCalendarInterval/StartInterval with tests (`HelpMeCronda/Models/CronParser.swift`)
-- [x] T004 [P] `LaunchdService` actor: list, bootstrap, bootout, kickstart, print parsing (`HelpMeCronda/Services/LaunchdService.swift`)
-- [x] T005 [P] `CrontabService` actor: read and parse `crontab -l` (`HelpMeCronda/Services/CrontabService.swift`)
-- [x] T006 AppState + three-pane main window: sidebar scopes (All, Enabled, Disabled, Cron), job list, detail pane per styling guide (`HelpMeCronda/UI/`)
-- [ ] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`HelpMeCronda/UI/JobEditor/`)
-- [ ] T008 Status + log capture: launchctl print polling, log file tail view (`HelpMeCronda/UI/JobDetail/`)
-- [ ] T009 Convert flow: cron entry to LaunchAgent, Converted badge (`HelpMeCronda/UI/`)
-- [ ] T010 Settings window (theme setting per styling guide), app icon, empty states pass, light/dark verification (`HelpMeCronda/Settings/`)
+- [x] T001 XcodeGen scaffold: `project.yml`, app target Palilogy, bundle ID `com.inklinglabs.palilogy`, Swift 6, no sandbox, min macOS version (`project.yml`, `Palilogy/`)
+- [x] T002 Job model + LaunchAgent plist codec with round-trip tests (`Palilogy/Models/`)
+- [x] T003 [P] Cron expression parser to StartCalendarInterval/StartInterval with tests (`Palilogy/Models/CronParser.swift`)
+- [x] T004 [P] `LaunchdService` actor: list, bootstrap, bootout, kickstart, print parsing (`Palilogy/Services/LaunchdService.swift`)
+- [x] T005 [P] `CrontabService` actor: read and parse `crontab -l` (`Palilogy/Services/CrontabService.swift`)
+- [x] T006 AppState + three-pane main window: sidebar scopes (All, Enabled, Disabled, Cron), job list, detail pane per styling guide (`Palilogy/UI/`)
+- [ ] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`Palilogy/UI/JobEditor/`)
+- [ ] T008 Status + log capture: launchctl print polling, log file tail view (`Palilogy/UI/JobDetail/`)
+- [ ] T009 Convert flow: cron entry to LaunchAgent, Converted badge (`Palilogy/UI/`)
+- [ ] T010 Settings window (theme setting per styling guide), app icon, empty states pass, light/dark verification (`Palilogy/Settings/`)
 
 ---
 

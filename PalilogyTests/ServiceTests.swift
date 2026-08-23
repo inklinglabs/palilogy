@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import HelpMeCronda
+@testable import Palilogy
 
 /// Records invocations and replays canned results, keyed by executable + first arg.
 final class MockRunner: CommandRunning, @unchecked Sendable {
@@ -83,13 +83,13 @@ struct LaunchdServiceTests {
         defer { try? FileManager.default.removeItem(at: dir) }
         let service = LaunchdService(runner: MockRunner(), agentsDirectory: dir, uid: 501)
 
-        var agent = LaunchAgent(label: "com.inklinglabs.helpmecronda.t")
+        var agent = LaunchAgent(label: "com.inklinglabs.palilogy.t")
         agent.programArguments = ["/usr/bin/true"]
         agent.startInterval = 60
-        agent.helpMeCrondaManaged = true
+        agent.palilogyManaged = true
 
         let url = try await service.write(agent)
-        #expect(url.lastPathComponent == "com.inklinglabs.helpmecronda.t.plist")
+        #expect(url.lastPathComponent == "com.inklinglabs.palilogy.t.plist")
         let listed = try await service.listAgents()
         #expect(listed.map(\.agent) == [agent])
     }

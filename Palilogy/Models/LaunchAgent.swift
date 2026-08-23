@@ -16,7 +16,7 @@ struct LaunchAgent: Codable, Hashable, Sendable {
     var standardErrorPath: String?
     var workingDirectory: String?
     var environmentVariables: [String: String]?
-    var helpMeCrondaManaged: Bool?
+    var palilogyManaged: Bool?
 
     enum CodingKeys: String, CodingKey {
         case label = "Label"
@@ -30,7 +30,7 @@ struct LaunchAgent: Codable, Hashable, Sendable {
         case standardErrorPath = "StandardErrorPath"
         case workingDirectory = "WorkingDirectory"
         case environmentVariables = "EnvironmentVariables"
-        case helpMeCrondaManaged = "HelpMeCrondaManaged"
+        case palilogyManaged = "PalilogyManaged"
     }
 
     init(label: String) {
@@ -55,10 +55,10 @@ struct LaunchAgent: Codable, Hashable, Sendable {
         standardErrorPath = try container.decodeIfPresent(String.self, forKey: .standardErrorPath)
         workingDirectory = try container.decodeIfPresent(String.self, forKey: .workingDirectory)
         environmentVariables = try container.decodeIfPresent([String: String].self, forKey: .environmentVariables)
-        helpMeCrondaManaged = try container.decodeIfPresent(Bool.self, forKey: .helpMeCrondaManaged)
+        palilogyManaged = try container.decodeIfPresent(Bool.self, forKey: .palilogyManaged)
     }
 
-    var isManaged: Bool { helpMeCrondaManaged == true }
+    var isManaged: Bool { palilogyManaged == true }
 
     var schedule: Schedule? {
         if let startInterval { return .interval(seconds: startInterval) }
