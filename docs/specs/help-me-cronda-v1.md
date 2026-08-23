@@ -170,9 +170,9 @@ stops, delete it, confirm the plist is gone.
 
 - [x] T001 XcodeGen scaffold: `project.yml`, app target HelpMeCronda, bundle ID `com.inklinglabs.helpmecronda`, Swift 6, no sandbox, min macOS version (`project.yml`, `HelpMeCronda/`)
 - [x] T002 Job model + LaunchAgent plist codec with round-trip tests (`HelpMeCronda/Models/`)
-- [ ] T003 [P] Cron expression parser to StartCalendarInterval/StartInterval with tests (`HelpMeCronda/Models/CronParser.swift`)
-- [ ] T004 [P] `LaunchdService` actor: list, bootstrap, bootout, kickstart, print parsing (`HelpMeCronda/Services/LaunchdService.swift`)
-- [ ] T005 [P] `CrontabService` actor: read and parse `crontab -l` (`HelpMeCronda/Services/CrontabService.swift`)
+- [x] T003 [P] Cron expression parser to StartCalendarInterval/StartInterval with tests (`HelpMeCronda/Models/CronParser.swift`)
+- [x] T004 [P] `LaunchdService` actor: list, bootstrap, bootout, kickstart, print parsing (`HelpMeCronda/Services/LaunchdService.swift`)
+- [x] T005 [P] `CrontabService` actor: read and parse `crontab -l` (`HelpMeCronda/Services/CrontabService.swift`)
 - [ ] T006 AppState + three-pane main window: sidebar scopes (All, Enabled, Disabled, Cron), job list, detail pane per styling guide (`HelpMeCronda/UI/`)
 - [ ] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`HelpMeCronda/UI/JobEditor/`)
 - [ ] T008 Status + log capture: launchctl print polling, log file tail view (`HelpMeCronda/UI/JobDetail/`)
