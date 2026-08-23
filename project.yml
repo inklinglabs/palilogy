@@ -1,4 +1,4 @@
-name: HelpMeCronda
+name: Palilogy
 options:
   bundleIdPrefix: com.inklinglabs
   deploymentTarget:
@@ -9,39 +9,39 @@ settings:
     SWIFT_VERSION: "6.0"
     SWIFT_STRICT_CONCURRENCY: complete
 targets:
-  HelpMeCronda:
+  Palilogy:
     type: application
     platform: macOS
     sources:
-      - HelpMeCronda
+      - Palilogy
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.inklinglabs.helpmecronda
-        INFOPLIST_FILE: HelpMeCronda/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.inklinglabs.palilogy
+        INFOPLIST_FILE: Palilogy/Info.plist
         GENERATE_INFOPLIST_FILE: false
         ENABLE_APP_SANDBOX: false
         ENABLE_HARDENED_RUNTIME: true
         CODE_SIGN_STYLE: Automatic
-  HelpMeCrondaTests:
+  PalilogyTests:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - HelpMeCrondaTests
+      - PalilogyTests
     settings:
       base:
         GENERATE_INFOPLIST_FILE: true
     dependencies:
-      - target: HelpMeCronda
+      - target: Palilogy
 schemes:
-  HelpMeCronda:
+  Palilogy:
     build:
       targets:
-        HelpMeCronda: all
+        Palilogy: all
     run:
       config: Debug
     test:
       config: Debug
       targets:
-        - HelpMeCrondaTests
+        - PalilogyTests
     archive:
       config: Release

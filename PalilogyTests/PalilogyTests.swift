@@ -1,7 +1,7 @@
 import Testing
-@testable import HelpMeCronda
+@testable import Palilogy
 
-struct HelpMeCrondaTests {
+struct PalilogyTests {
     @Test func scaffoldBuilds() {
         #expect(Bool(true))
     }

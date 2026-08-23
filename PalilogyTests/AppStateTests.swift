@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import HelpMeCronda
+@testable import Palilogy
 
 struct ScheduleFormatterTests {
     @Test func intervalDescriptions() {

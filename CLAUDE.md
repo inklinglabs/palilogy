@@ -5,7 +5,7 @@ repository.
 
 ## What this is
 
-HelpMeCronda: Create, view, edit, and delete scheduled jobs on your Mac from a friendly native app.
+Palilogy: Create, view, edit, and delete scheduled jobs on your Mac from a friendly native app.
 
 ## Standards
 
@@ -26,19 +26,19 @@ This repo follows the Inkling Labs standards
 UI design language and Mac app patterns live in
 [docs/mac-app-styling.md](docs/mac-app-styling.md), based on Captain's Log
 (the reference implementation). Follow it for colors, typography, window
-layout, settings, and menu bar behavior. Bundle ID: `com.inklinglabs.helpmecronda`.
+layout, settings, and menu bar behavior. Bundle ID: `com.inklinglabs.palilogy`.
 
 ## Commands
 
-- `xcodegen generate` regenerates `HelpMeCronda.xcodeproj` from `project.yml`
+- `xcodegen generate` regenerates `Palilogy.xcodeproj` from `project.yml`
   (the `.xcodeproj` is gitignored; rerun after changing `project.yml` or
   adding files).
-- Build: `xcodebuild -project HelpMeCronda.xcodeproj -scheme HelpMeCronda -configuration Debug build`
-- Test: `xcodebuild -project HelpMeCronda.xcodeproj -scheme HelpMeCronda test`
+- Build: `xcodebuild -project Palilogy.xcodeproj -scheme Palilogy -configuration Debug build`
+- Test: `xcodebuild -project Palilogy.xcodeproj -scheme Palilogy test`
 
 ## Architecture
 
 - SwiftUI, Swift 6 strict concurrency, macOS 14.0 minimum, no sandbox
   (the app shells out to launchctl and crontab).
-- App source in `HelpMeCronda/`, tests in `HelpMeCrondaTests/` (Swift Testing).
-- The v1 design lives in [docs/specs/help-me-cronda-v1.md](docs/specs/help-me-cronda-v1.md).
+- App source in `Palilogy/`, tests in `PalilogyTests/` (Swift Testing).
+- The v1 design lives in [docs/specs/palilogy-v1.md](docs/specs/palilogy-v1.md).

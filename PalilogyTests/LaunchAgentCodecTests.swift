@@ -1,10 +1,10 @@
 import Foundation
 import Testing
-@testable import HelpMeCronda
+@testable import Palilogy
 
 struct LaunchAgentCodecTests {
     @Test func roundTripFullAgent() throws {
-        var agent = LaunchAgent(label: "com.inklinglabs.helpmecronda.backup")
+        var agent = LaunchAgent(label: "com.inklinglabs.palilogy.backup")
         agent.programArguments = ["/bin/zsh", "-c", "backup.sh"]
         agent.runAtLoad = true
         agent.disabled = false
@@ -16,7 +16,7 @@ struct LaunchAgentCodecTests {
         agent.standardErrorPath = "/tmp/err.log"
         agent.workingDirectory = "/Users/x"
         agent.environmentVariables = ["PATH": "/usr/bin"]
-        agent.helpMeCrondaManaged = true
+        agent.palilogyManaged = true
 
         let decoded = try LaunchAgentCodec.decode(LaunchAgentCodec.encode(agent))
         #expect(decoded == agent)
