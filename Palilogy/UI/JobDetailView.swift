@@ -87,6 +87,7 @@ struct AgentDetailView: View {
                         .foregroundStyle(.secondary)
                         .textSelection(.enabled)
                 }
+                LogView(agent: file.agent)
             }
             .frame(maxWidth: 640, alignment: .leading)
             .padding(28)
