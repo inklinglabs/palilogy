@@ -71,6 +71,12 @@ actor LaunchdService {
         return url
     }
 
+    /// Unloads (best effort; the job may not be loaded) and deletes the plist.
+    func remove(_ file: AgentFile) async throws {
+        try? await bootout(label: file.agent.label)
+        try FileManager.default.removeItem(at: file.url)
+    }
+
     func bootstrap(_ plistURL: URL) async throws {
         try await launchctl("bootstrap", [domain, plistURL.path])
     }

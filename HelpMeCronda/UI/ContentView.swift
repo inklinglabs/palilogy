@@ -1,35 +1,60 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(AppState.self) private var state
+
     var body: some View {
+        @Bindable var state = state
         NavigationSplitView {
-            List {
+            List(selection: sidebarSelection) {
                 Section("Jobs") {
-                    Label("All", systemImage: "clock")
-                    Label("Enabled", systemImage: "play.circle")
-                    Label("Disabled", systemImage: "pause.circle")
+                    ForEach([AppState.Scope.all, .enabled, .disabled]) { scope in
+                        Label(scope.title, systemImage: scope.systemImage).tag(scope)
+                    }
                 }
                 Section("Legacy") {
-                    Label("Cron", systemImage: "terminal")
+                    Label(AppState.Scope.cron.title, systemImage: AppState.Scope.cron.systemImage)
+                        .tag(AppState.Scope.cron)
                 }
             }
             .listStyle(.sidebar)
+            .navigationSplitViewColumnWidth(min: 160, ideal: 180)
         } content: {
-            ContentUnavailableView(
-                "No Jobs Yet",
-                systemImage: "clock.badge.questionmark",
-                description: Text("Jobs you schedule will appear here.")
-            )
+            JobListView()
+                .navigationSplitViewColumnWidth(min: 260, ideal: 320)
         } detail: {
-            ContentUnavailableView(
-                "Nothing Selected",
-                systemImage: "sidebar.right",
-                description: Text("Select a job to see its details.")
-            )
+            JobDetailView()
         }
+        .task { await state.refresh() }
+        .toolbar {
+            ToolbarItem {
+                Button("Refresh", systemImage: "arrow.clockwise") {
+                    Task { await state.refresh() }
+                }
+                .help("Reload jobs and cron entries")
+            }
+        }
+        .alert(
+            "Something Went Wrong",
+            isPresented: Binding(
+                get: { state.lastError != nil },
+                set: { if !$0 { state.lastError = nil } }
+            )
+        ) {
+            Button("OK") { state.lastError = nil }
+        } message: {
+            Text(state.lastError ?? "")
+        }
+    }
+
+    private var sidebarSelection: Binding<AppState.Scope?> {
+        Binding(
+            get: { state.scope },
+            set: { state.scope = $0 ?? .all }
+        )
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView().environment(AppState())
 }
