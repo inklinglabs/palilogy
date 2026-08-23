@@ -127,7 +127,9 @@ struct AgentDetailView: View {
 }
 
 struct CronDetailView: View {
+    @Environment(AppState.self) private var state
     var entry: CronEntry
+    @State private var confirmingConvert = false
 
     var body: some View {
         ScrollView {
@@ -136,9 +138,37 @@ struct CronDetailView: View {
                     Text(entry.command)
                         .font(.title3.weight(.semibold))
                         .textSelection(.enabled)
-                    Text("From your crontab. This app does not change cron entries.")
+                    Text("From your crontab.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+                    if state.isConverted(entry) {
+                        Text("Converted to a launchd job. The original entry is still in your crontab.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    } else if entry.schedule == nil {
+                        Text("The schedule \"\(entry.scheduleExpression)\" cannot be converted automatically.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Button("Convert to launchd Job") {
+                            confirmingConvert = true
+                        }
+                        Text("Creates a job with the same command and schedule that also runs after your Mac wakes from sleep.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .confirmationDialog("Convert this cron entry?", isPresented: $confirmingConvert) {
+                    Button("Convert") {
+                        Task { await state.convert(entry) }
+                    }
+                } message: {
+                    Text(AppSettings.removeCronAfterConvert
+                        ? "A launchd job will be created and this line will be removed from your crontab."
+                        : "A launchd job will be created. The cron entry stays in your crontab and is marked Converted.")
                 }
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Schedule")

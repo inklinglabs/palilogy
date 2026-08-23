@@ -39,6 +39,38 @@ actor CrontabService {
         return Self.parse(result.stdout)
     }
 
+    /// Removes an entry's line from the crontab. The one crontab write in
+    /// the app, opt-in behind the clean-up-after-convert setting.
+    func removeEntry(_ entry: CronEntry) async throws {
+        let result = try await runner.run(Self.crontab, ["-l"])
+        guard result.exitCode == 0 else {
+            throw LaunchdError(operation: "crontab -l", exitCode: result.exitCode, stderr: result.stderr)
+        }
+        guard let updated = Self.removing(line: entry.raw, from: result.stdout) else {
+            throw LaunchdError(
+                operation: "crontab update", exitCode: 1,
+                stderr: "The entry was not found; the crontab may have changed since it was read."
+            )
+        }
+        let tempFile = FileManager.default.temporaryDirectory
+            .appending(path: "palilogy-crontab-\(UUID().uuidString)")
+        try updated.write(to: tempFile, atomically: true, encoding: .utf8)
+        defer { try? FileManager.default.removeItem(at: tempFile) }
+        let write = try await runner.run(Self.crontab, [tempFile.path])
+        guard write.exitCode == 0 else {
+            throw LaunchdError(operation: "crontab write", exitCode: write.exitCode, stderr: write.stderr)
+        }
+    }
+
+    /// The crontab text without the first line exactly equal to `raw`, or
+    /// nil when no such line exists.
+    static func removing(line raw: String, from crontabText: String) -> String? {
+        var lines = crontabText.components(separatedBy: "\n")
+        guard let index = lines.firstIndex(of: raw) else { return nil }
+        lines.remove(at: index)
+        return lines.joined(separator: "\n")
+    }
+
     static func parse(_ crontabText: String) -> [CronEntry] {
         var entries: [CronEntry] = []
         for (index, rawLine) in crontabText.split(separator: "\n", omittingEmptySubsequences: false).enumerated() {

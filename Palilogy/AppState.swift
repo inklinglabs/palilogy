@@ -37,6 +37,11 @@ final class AppState {
     var lastError: String?
     /// Non-nil while the job editor sheet is up.
     var editorDraft: JobDraft?
+    /// Raw crontab lines already converted (only tracked when the entry
+    /// stays in the crontab). Persisted in UserDefaults.
+    private(set) var convertedCronLines: Set<String> = Set(
+        UserDefaults.standard.stringArray(forKey: AppSettings.convertedCronLinesKey) ?? []
+    )
 
     private let launchd: LaunchdService
     private let crontab: CrontabService
@@ -131,6 +136,32 @@ final class AppState {
             try await self.launchd.bootstrap(url)
             self.editorDraft = nil
             await self.refresh()
+            self.selectedJobID = agent.label
+        }
+    }
+
+    // MARK: - Conversion
+
+    func isConverted(_ entry: CronEntry) -> Bool {
+        convertedCronLines.contains(entry.raw)
+    }
+
+    func convert(_ entry: CronEntry) async {
+        await reportingErrors {
+            guard let agent = CronConversion.agent(for: entry, existingLabels: self.labelsInUse())
+            else { return }
+            let url = try await self.launchd.write(agent)
+            try await self.launchd.bootstrap(url)
+            if AppSettings.removeCronAfterConvert {
+                try await self.crontab.removeEntry(entry)
+            } else {
+                self.convertedCronLines.insert(entry.raw)
+                UserDefaults.standard.set(
+                    Array(self.convertedCronLines), forKey: AppSettings.convertedCronLinesKey
+                )
+            }
+            await self.refresh()
+            self.scope = .all
             self.selectedJobID = agent.label
         }
     }
