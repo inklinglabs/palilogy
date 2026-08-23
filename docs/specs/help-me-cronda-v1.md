@@ -48,10 +48,11 @@ setting, grouped-form Settings window).
 **Data sources.** Two, merged into one job list:
 
 - `~/Library/LaunchAgents/*.plist`, parsed with `PropertyListDecoder`.
-  Editable. Jobs the app created carry a marker key
-  (`HelpMeCrondaManaged: true`) in the plist; editing an agent the app did
-  not create requires a one-time confirmation, since third-party apps own
-  those files.
+  Jobs the app created carry a marker key (`HelpMeCrondaManaged: true`) in
+  the plist and are fully editable. Agents the app did not create (foreign
+  agents) are enable/disable/delete only; the editor is not offered for
+  them, since third-party apps own those files and rewriting them risks
+  breaking their owners.
 - `crontab -l` output, parsed into entries. Read-only rows in a separate
   sidebar scope, each with a Convert button.
 
@@ -81,7 +82,8 @@ can be represented there.
   and it is what every competitor does.
 - Showing all user agents, not just app-created ones: riskier (users can
   break third-party updaters) but "see everything scheduled on my Mac" is
-  the core value. Mitigated by the confirmation on foreign agents.
+  the core value. Mitigated by foreign agents being enable/disable/delete
+  only, never rewritten.
 
 ## 5. Alternatives Considered
 
@@ -113,8 +115,9 @@ can be represented there.
   crontab, marked Converted in the list.
 - GIVEN an empty crontab (`crontab -l` exits 1) WHEN the app launches THEN
   the Cron scope shows a ContentUnavailableView, not an error.
-- GIVEN a LaunchAgent the app did not create WHEN the user edits it THE
-  SYSTEM SHALL require a confirmation naming the plist path before saving.
+- GIVEN a LaunchAgent the app did not create WHEN the user selects it THEN
+  no Edit control is offered; enable, disable, and delete are available,
+  and delete requires a confirmation naming the plist path.
 - GIVEN a disabled job WHEN its scheduled time passes THEN the command does
   not run.
 - WHEN the user clicks Run Now on a loaded job THEN the command executes
@@ -161,12 +164,12 @@ stops, delete it, confirm the plist is gone.
 |---|---|---|
 | Should Convert offer an optional "remove from crontab" step (the one crontab write that might be worth it)? | Matt, after using v1 | No |
 | ~~Minimum macOS version~~ Resolved: 14.0 | Matt, 2026-08-23 | No |
-| Should foreign (non-app-created) agents be enable/disable only, with full edit gated behind a setting? | During implementation | No |
+| ~~Foreign agent editing~~ Resolved: enable/disable/delete only in v1, no editor | Matt, 2026-08-23 | No |
 
 ## Task Breakdown
 
 - [x] T001 XcodeGen scaffold: `project.yml`, app target HelpMeCronda, bundle ID `com.inklinglabs.helpmecronda`, Swift 6, no sandbox, min macOS version (`project.yml`, `HelpMeCronda/`)
-- [ ] T002 Job model + LaunchAgent plist codec with round-trip tests (`HelpMeCronda/Models/`)
+- [x] T002 Job model + LaunchAgent plist codec with round-trip tests (`HelpMeCronda/Models/`)
 - [ ] T003 [P] Cron expression parser to StartCalendarInterval/StartInterval with tests (`HelpMeCronda/Models/CronParser.swift`)
 - [ ] T004 [P] `LaunchdService` actor: list, bootstrap, bootout, kickstart, print parsing (`HelpMeCronda/Services/LaunchdService.swift`)
 - [ ] T005 [P] `CrontabService` actor: read and parse `crontab -l` (`HelpMeCronda/Services/CrontabService.swift`)
