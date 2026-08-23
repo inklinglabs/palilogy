@@ -1,0 +1,47 @@
+name: HelpMeCronda
+options:
+  bundleIdPrefix: com.inklinglabs
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+targets:
+  HelpMeCronda:
+    type: application
+    platform: macOS
+    sources:
+      - HelpMeCronda
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.inklinglabs.helpmecronda
+        INFOPLIST_FILE: HelpMeCronda/Info.plist
+        GENERATE_INFOPLIST_FILE: false
+        ENABLE_APP_SANDBOX: false
+        ENABLE_HARDENED_RUNTIME: true
+        CODE_SIGN_STYLE: Automatic
+  HelpMeCrondaTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - HelpMeCrondaTests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: HelpMeCronda
+schemes:
+  HelpMeCronda:
+    build:
+      targets:
+        HelpMeCronda: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - HelpMeCrondaTests
+    archive:
+      config: Release

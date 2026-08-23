@@ -30,8 +30,15 @@ layout, settings, and menu bar behavior. Bundle ID: `com.inklinglabs.helpmecrond
 
 ## Commands
 
-<!-- Fill in during the first working session: build, run, test. -->
+- `xcodegen generate` regenerates `HelpMeCronda.xcodeproj` from `project.yml`
+  (the `.xcodeproj` is gitignored; rerun after changing `project.yml` or
+  adding files).
+- Build: `xcodebuild -project HelpMeCronda.xcodeproj -scheme HelpMeCronda -configuration Debug build`
+- Test: `xcodebuild -project HelpMeCronda.xcodeproj -scheme HelpMeCronda test`
 
 ## Architecture
 
-<!-- Fill in as the project takes shape. Delete these comments. -->
+- SwiftUI, Swift 6 strict concurrency, macOS 14.0 minimum, no sandbox
+  (the app shells out to launchctl and crontab).
+- App source in `HelpMeCronda/`, tests in `HelpMeCrondaTests/` (Swift Testing).
+- The v1 design lives in [docs/specs/help-me-cronda-v1.md](docs/specs/help-me-cronda-v1.md).

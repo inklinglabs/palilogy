@@ -19,3 +19,6 @@ xcuserdata/
 *.p8
 *.mobileprovision
 *.provisionprofile
+
+# XcodeGen output
+*.xcodeproj
