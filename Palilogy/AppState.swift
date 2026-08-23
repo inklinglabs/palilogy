@@ -65,6 +65,16 @@ final class AppState {
         }
     }
 
+    /// Cheap status-only poll so the list stays honest while the app is
+    /// open. Errors are ignored; the next full refresh surfaces them.
+    func refreshStatuses() async {
+        for file in agents {
+            if let status = try? await launchd.status(label: file.agent.label) {
+                statuses[file.agent.label] = status
+            }
+        }
+    }
+
     // MARK: - Filtering
 
     var visibleAgents: [AgentFile] {

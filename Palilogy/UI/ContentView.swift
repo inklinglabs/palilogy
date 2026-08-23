@@ -26,6 +26,12 @@ struct ContentView: View {
             JobDetailView()
         }
         .task { await state.refresh() }
+        .task {
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(5))
+                await state.refreshStatuses()
+            }
+        }
         .toolbar {
             ToolbarItem {
                 Button("Refresh", systemImage: "arrow.clockwise") {

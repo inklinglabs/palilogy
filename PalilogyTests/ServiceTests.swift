@@ -144,3 +144,29 @@ struct ProcessRunnerTests {
         #expect(result.stderr == "err\n")
     }
 }
+
+struct LogReaderTests {
+    @Test func missingFileIsNil() {
+        #expect(LogReader.tail(path: "/nonexistent/palilogy.log") == nil)
+    }
+
+    @Test func readsWholeSmallFile() throws {
+        let url = FileManager.default.temporaryDirectory
+            .appending(path: "palilogy-log-\(UUID().uuidString).log")
+        defer { try? FileManager.default.removeItem(at: url) }
+        try Data("line1\nline2\n".utf8).write(to: url)
+        #expect(LogReader.tail(path: url.path) == "line1\nline2\n")
+    }
+
+    @Test func truncatesLongFileFromFrontAtLineBoundary() throws {
+        let url = FileManager.default.temporaryDirectory
+            .appending(path: "palilogy-log-\(UUID().uuidString).log")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let lines = (0..<1000).map { "line \($0) padded out to be reasonably long" }
+        try Data(lines.joined(separator: "\n").utf8).write(to: url)
+        let tail = try #require(LogReader.tail(path: url.path, maxBytes: 1024))
+        #expect(tail.count <= 1024)
+        #expect(tail.hasPrefix("line "))
+        #expect(tail.hasSuffix(lines.last!))
+    }
+}
