@@ -67,6 +67,12 @@ actor LaunchdService {
             at: agentsDirectory, withIntermediateDirectories: true
         )
         let url = agentsDirectory.appending(path: "\(agent.label).plist")
+        for logPath in [agent.standardOutPath, agent.standardErrorPath].compactMap({ $0 }) {
+            try? FileManager.default.createDirectory(
+                atPath: (logPath as NSString).deletingLastPathComponent,
+                withIntermediateDirectories: true
+            )
+        }
         try LaunchAgentCodec.encode(agent).write(to: url, options: .atomic)
         return url
     }

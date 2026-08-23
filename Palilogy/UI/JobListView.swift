@@ -69,15 +69,15 @@ struct AgentRow: View {
                 Circle()
                     .fill(isEnabled ? Color.green : Color.secondary.opacity(0.4))
                     .frame(width: 7, height: 7)
-                Text(file.agent.label)
+                Text(file.agent.displayName)
                     .font(.subheadline.weight(.semibold))
                     .lineLimit(1)
             }
-            Text(file.agent.command.joined(separator: " "))
+            Text(file.agent.displayCommand)
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
-            Text(file.agent.schedule?.displayText ?? "No schedule")
+            Text(file.agent.schedule?.displayText ?? "Runs on demand")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

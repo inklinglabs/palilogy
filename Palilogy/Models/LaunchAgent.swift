@@ -17,6 +17,7 @@ struct LaunchAgent: Codable, Hashable, Sendable {
     var workingDirectory: String?
     var environmentVariables: [String: String]?
     var palilogyManaged: Bool?
+    var palilogyName: String?
 
     enum CodingKeys: String, CodingKey {
         case label = "Label"
@@ -31,6 +32,7 @@ struct LaunchAgent: Codable, Hashable, Sendable {
         case workingDirectory = "WorkingDirectory"
         case environmentVariables = "EnvironmentVariables"
         case palilogyManaged = "PalilogyManaged"
+        case palilogyName = "PalilogyName"
     }
 
     init(label: String) {
@@ -56,6 +58,7 @@ struct LaunchAgent: Codable, Hashable, Sendable {
         workingDirectory = try container.decodeIfPresent(String.self, forKey: .workingDirectory)
         environmentVariables = try container.decodeIfPresent([String: String].self, forKey: .environmentVariables)
         palilogyManaged = try container.decodeIfPresent(Bool.self, forKey: .palilogyManaged)
+        palilogyName = try container.decodeIfPresent(String.self, forKey: .palilogyName)
     }
 
     var isManaged: Bool { palilogyManaged == true }
@@ -73,6 +76,22 @@ struct LaunchAgent: Codable, Hashable, Sendable {
         if let programArguments, !programArguments.isEmpty { return programArguments }
         if let program { return [program] }
         return []
+    }
+
+    /// What to show as the job's name: the friendly name for managed jobs,
+    /// the label otherwise.
+    var displayName: String {
+        palilogyName ?? label
+    }
+
+    /// The command as one line. App-created jobs run through a shell, so
+    /// show just the shell command, not the zsh -c wrapper.
+    var displayCommand: String {
+        if command.count == 3, command[1] == "-c",
+           command[0].hasSuffix("sh") {
+            return command[2]
+        }
+        return command.joined(separator: " ")
     }
 }
 

@@ -33,6 +33,22 @@ struct ContentView: View {
                 }
                 .help("Reload jobs and cron entries")
             }
+            ToolbarItem(placement: .primaryAction) {
+                Button("New Job", systemImage: "plus") {
+                    state.presentNewJob()
+                }
+                .help("Schedule a new job")
+            }
+        }
+        .sheet(
+            isPresented: Binding(
+                get: { state.editorDraft != nil },
+                set: { if !$0 { state.editorDraft = nil } }
+            )
+        ) {
+            if let draft = state.editorDraft {
+                JobEditorView(draft: draft)
+            }
         }
         .alert(
             "Something Went Wrong",

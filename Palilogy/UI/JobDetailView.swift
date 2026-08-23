@@ -30,9 +30,15 @@ struct AgentDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(file.agent.label)
+                    Text(file.agent.displayName)
                         .font(.title2.weight(.semibold))
                         .textSelection(.enabled)
+                    if file.agent.palilogyName != nil {
+                        Text(file.agent.label)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                    }
                     if !file.agent.isManaged {
                         Text("Installed by another app. It can be turned on or off or deleted, but not edited here.")
                             .font(.caption)
@@ -41,6 +47,11 @@ struct AgentDetailView: View {
                 }
 
                 HStack(spacing: 12) {
+                    if file.agent.isManaged {
+                        Button("Edit") {
+                            state.presentEdit(file)
+                        }
+                    }
                     Button(isEnabled ? "Disable" : "Enable") {
                         Task { await state.toggle(file) }
                     }
@@ -63,12 +74,12 @@ struct AgentDetailView: View {
                     }
                 }
                 field("Command") {
-                    Text(file.agent.command.joined(separator: " "))
+                    Text(file.agent.displayCommand)
                         .font(.system(size: 13, design: .monospaced))
                         .textSelection(.enabled)
                 }
                 field("Schedule") {
-                    Text(file.agent.schedule?.displayText ?? "No schedule")
+                    Text(file.agent.schedule?.displayText ?? "Runs on demand")
                 }
                 field("File") {
                     Text(file.url.path)

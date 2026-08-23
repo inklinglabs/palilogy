@@ -174,7 +174,7 @@ stops, delete it, confirm the plist is gone.
 - [x] T004 [P] `LaunchdService` actor: list, bootstrap, bootout, kickstart, print parsing (`Palilogy/Services/LaunchdService.swift`)
 - [x] T005 [P] `CrontabService` actor: read and parse `crontab -l` (`Palilogy/Services/CrontabService.swift`)
 - [x] T006 AppState + three-pane main window: sidebar scopes (All, Enabled, Disabled, Cron), job list, detail pane per styling guide (`Palilogy/UI/`)
-- [ ] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`Palilogy/UI/JobEditor/`)
+- [x] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`Palilogy/UI/JobEditor/`)
 - [ ] T008 Status + log capture: launchctl print polling, log file tail view (`Palilogy/UI/JobDetail/`)
 - [ ] T009 Convert flow: cron entry to LaunchAgent, Converted badge (`Palilogy/UI/`)
 - [ ] T010 Settings window (theme setting per styling guide), app icon, empty states pass, light/dark verification (`Palilogy/Settings/`)
