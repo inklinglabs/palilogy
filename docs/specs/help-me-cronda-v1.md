@@ -160,12 +160,12 @@ stops, delete it, confirm the plist is gone.
 | Question | Resolved by | Blocks implementation? |
 |---|---|---|
 | Should Convert offer an optional "remove from crontab" step (the one crontab write that might be worth it)? | Matt, after using v1 | No |
-| Minimum macOS version (styling reference uses recent SwiftUI; propose 14.0) | Matt, at T001 | No |
+| ~~Minimum macOS version~~ Resolved: 14.0 | Matt, 2026-08-23 | No |
 | Should foreign (non-app-created) agents be enable/disable only, with full edit gated behind a setting? | During implementation | No |
 
 ## Task Breakdown
 
-- [ ] T001 XcodeGen scaffold: `project.yml`, app target HelpMeCronda, bundle ID `com.inklinglabs.helpmecronda`, Swift 6, no sandbox, min macOS version (`project.yml`, `HelpMeCronda/`)
+- [x] T001 XcodeGen scaffold: `project.yml`, app target HelpMeCronda, bundle ID `com.inklinglabs.helpmecronda`, Swift 6, no sandbox, min macOS version (`project.yml`, `HelpMeCronda/`)
 - [ ] T002 Job model + LaunchAgent plist codec with round-trip tests (`HelpMeCronda/Models/`)
 - [ ] T003 [P] Cron expression parser to StartCalendarInterval/StartInterval with tests (`HelpMeCronda/Models/CronParser.swift`)
 - [ ] T004 [P] `LaunchdService` actor: list, bootstrap, bootout, kickstart, print parsing (`HelpMeCronda/Services/LaunchdService.swift`)
