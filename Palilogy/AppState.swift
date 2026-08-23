@@ -35,6 +35,8 @@ final class AppState {
     var cronEntries: [CronEntry] = []
     var isLoading = false
     var lastError: String?
+    /// Non-nil while the job editor sheet is up.
+    var editorDraft: JobDraft?
 
     private let launchd: LaunchdService
     private let crontab: CrontabService
@@ -90,6 +92,37 @@ final class AppState {
 
     var selectedCronEntry: CronEntry? {
         cronEntries.first { "cron-\($0.id)" == selectedJobID }
+    }
+
+    // MARK: - Editor
+
+    func labelsInUse(excluding label: String? = nil) -> Set<String> {
+        Set(agents.map(\.agent.label)).subtracting([label].compactMap { $0 })
+    }
+
+    func presentNewJob() {
+        editorDraft = JobDraft()
+    }
+
+    func presentEdit(_ file: AgentFile) {
+        editorDraft = JobDraft(editing: file.agent)
+    }
+
+    func save(_ draft: JobDraft) async {
+        await reportingErrors {
+            let agent = try draft.buildAgent(
+                existingLabels: self.labelsInUse(excluding: draft.existingLabel)
+            )
+            if draft.existingLabel != nil {
+                // Unload the old definition so the rewrite takes effect.
+                try? await self.launchd.bootout(label: agent.label)
+            }
+            let url = try await self.launchd.write(agent)
+            try await self.launchd.bootstrap(url)
+            self.editorDraft = nil
+            await self.refresh()
+            self.selectedJobID = agent.label
+        }
     }
 
     // MARK: - Actions
