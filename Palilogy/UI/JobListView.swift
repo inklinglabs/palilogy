@@ -86,6 +86,7 @@ struct AgentRow: View {
 }
 
 struct CronRow: View {
+    @Environment(AppState.self) private var state
     var entry: CronEntry
 
     var body: some View {
@@ -96,7 +97,7 @@ struct CronRow: View {
             Text(entry.schedule?.displayText ?? entry.scheduleExpression)
                 .font(.callout)
                 .foregroundStyle(.secondary)
-            Text("Cron, read only")
+            Text(state.isConverted(entry) ? "Cron, converted" : "Cron, read only")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

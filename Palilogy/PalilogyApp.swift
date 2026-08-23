@@ -8,7 +8,12 @@ struct PalilogyApp: App {
         WindowGroup {
             ContentView()
                 .environment(appState)
+                .onAppear { AppSettings.applyAppearance() }
         }
         .defaultSize(width: 960, height: 620)
+
+        Settings {
+            SettingsView()
+        }
     }
 }

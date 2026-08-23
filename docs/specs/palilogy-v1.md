@@ -29,8 +29,9 @@ or why it failed.
 ## 3. Non-Goals
 
 - **Menu bar presence.** Excluded entirely per Matt, not backlogged.
-- **Writing to crontab.** Cron is read-only in v1. Convert leaves the original
-  cron line untouched; removing it is the user's job (see Open Questions).
+- **Managing cron as a backend.** Cron is read-only, with one opt-in
+  exception: a settings toggle (default off) lets Convert also remove the
+  converted line from the crontab. No other crontab writes exist.
 - **System agents/daemons (`/Library/LaunchAgents`, `/Library/LaunchDaemons`).**
   Root-owned, high blast radius, excluded from v1.
 - **Advanced launchd triggers (WatchPaths, Sockets, MachServices).** v1 is
@@ -110,9 +111,13 @@ can be represented there.
   shows the exit code and the detail pane shows the captured stderr.
 - GIVEN a crontab with at least one entry WHEN the app launches THEN the
   entry appears under the Cron scope with no edit or delete controls.
-- GIVEN a cron entry WHEN the user clicks Convert and confirms THEN an
-  equivalent loaded LaunchAgent exists and the cron entry remains in the
-  crontab, marked Converted in the list.
+- GIVEN a cron entry and the clean-up setting off (default) WHEN the user
+  clicks Convert and confirms THEN an equivalent loaded LaunchAgent exists
+  and the cron entry remains in the crontab, marked Converted in the list.
+- GIVEN a cron entry and the clean-up setting on WHEN the user clicks
+  Convert and confirms THEN an equivalent loaded LaunchAgent exists and the
+  entry's line is removed from the crontab; every other crontab line is
+  unchanged.
 - GIVEN an empty crontab (`crontab -l` exits 1) WHEN the app launches THEN
   the Cron scope shows a ContentUnavailableView, not an error.
 - GIVEN a LaunchAgent the app did not create WHEN the user selects it THEN
@@ -137,7 +142,8 @@ can be represented there.
 - At runtime: user crontab via `crontab -l`
 
 **Do not touch:**
-- The crontab (no writes in v1)
+- The crontab, except removing a just-converted line when the clean-up
+  setting is on
 - `/Library/LaunchAgents`, `/Library/LaunchDaemons`, anything under `/System`
 - `main` branch, tags, releases (per CLAUDE.md)
 
@@ -162,7 +168,7 @@ stops, delete it, confirm the plist is gone.
 
 | Question | Resolved by | Blocks implementation? |
 |---|---|---|
-| Should Convert offer an optional "remove from crontab" step (the one crontab write that might be worth it)? | Matt, after using v1 | No |
+| ~~Convert crontab clean-up~~ Resolved: settings toggle, default off | Matt, 2026-08-23 | No |
 | ~~Minimum macOS version~~ Resolved: 14.0 | Matt, 2026-08-23 | No |
 | ~~Foreign agent editing~~ Resolved: enable/disable/delete only in v1, no editor | Matt, 2026-08-23 | No |
 
@@ -175,9 +181,9 @@ stops, delete it, confirm the plist is gone.
 - [x] T005 [P] `CrontabService` actor: read and parse `crontab -l` (`Palilogy/Services/CrontabService.swift`)
 - [x] T006 AppState + three-pane main window: sidebar scopes (All, Enabled, Disabled, Cron), job list, detail pane per styling guide (`Palilogy/UI/`)
 - [x] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`Palilogy/UI/JobEditor/`)
-- [ ] T008 Status + log capture: launchctl print polling, log file tail view (`Palilogy/UI/JobDetail/`)
-- [ ] T009 Convert flow: cron entry to LaunchAgent, Converted badge (`Palilogy/UI/`)
-- [ ] T010 Settings window (theme setting per styling guide), app icon, empty states pass, light/dark verification (`Palilogy/Settings/`)
+- [x] T008 Status + log capture: launchctl print polling, log file tail view (`Palilogy/UI/`)
+- [x] T009 Convert flow: cron entry to LaunchAgent, Converted badge, opt-in crontab clean-up setting (`Palilogy/UI/`)
+- [ ] T010 Settings window (theme setting per styling guide) done; remaining: app icon (Matt), light/dark visual verification (`Palilogy/Settings/`)
 
 ---
 
