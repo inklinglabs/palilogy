@@ -146,13 +146,13 @@ final class AppState {
         convertedCronLines.contains(entry.raw)
     }
 
-    func convert(_ entry: CronEntry) async {
+    func convert(_ entry: CronEntry, removeFromCrontab: Bool) async {
         await reportingErrors {
             guard let agent = CronConversion.agent(for: entry, existingLabels: self.labelsInUse())
             else { return }
             let url = try await self.launchd.write(agent)
             try await self.launchd.bootstrap(url)
-            if AppSettings.removeCronAfterConvert {
+            if removeFromCrontab {
                 try await self.crontab.removeEntry(entry)
             } else {
                 self.convertedCronLines.insert(entry.raw)

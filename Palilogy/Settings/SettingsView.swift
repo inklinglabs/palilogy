@@ -28,10 +28,10 @@ private struct GeneralSettingsPane: View {
                 }
             }
             Section {
-                Toggle("Clean up crontab after converting", isOn: $removeCronAfterConvert)
+                Toggle("Always clean up crontab after converting", isOn: $removeCronAfterConvert)
                 Text(removeCronAfterConvert
-                    ? "Converting a cron entry also deletes its line from your crontab. This is the only time Palilogy changes your crontab."
-                    : "Converted cron entries stay in your crontab and are marked Converted. Palilogy never changes your crontab.")
+                    ? "Converting a cron entry always deletes its line from your crontab. This is the only time Palilogy changes your crontab."
+                    : "Each conversion asks whether to keep the cron entry or remove its line. Palilogy never changes your crontab otherwise.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

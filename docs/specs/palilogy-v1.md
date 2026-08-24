@@ -111,13 +111,14 @@ can be represented there.
   shows the exit code and the detail pane shows the captured stderr.
 - GIVEN a crontab with at least one entry WHEN the app launches THEN the
   entry appears under the Cron scope with no edit or delete controls.
-- GIVEN a cron entry and the clean-up setting off (default) WHEN the user
-  clicks Convert and confirms THEN an equivalent loaded LaunchAgent exists
-  and the cron entry remains in the crontab, marked Converted in the list.
-- GIVEN a cron entry and the clean-up setting on WHEN the user clicks
-  Convert and confirms THEN an equivalent loaded LaunchAgent exists and the
-  entry's line is removed from the crontab; every other crontab line is
-  unchanged.
+- GIVEN a cron entry and the always-clean-up setting off (default) WHEN the
+  user clicks Convert THEN the dialog offers "Convert" and "Convert and
+  Remove from Crontab"; the first leaves the entry in the crontab marked
+  Converted, the second removes its line. Either way an equivalent loaded
+  LaunchAgent exists afterward.
+- GIVEN the always-clean-up setting on WHEN the user converts THEN the
+  entry's line is removed from the crontab without a keep option; every
+  other crontab line is unchanged.
 - GIVEN an empty crontab (`crontab -l` exits 1) WHEN the app launches THEN
   the Cron scope shows a ContentUnavailableView, not an error.
 - GIVEN a LaunchAgent the app did not create WHEN the user selects it THEN
@@ -183,7 +184,7 @@ stops, delete it, confirm the plist is gone.
 - [x] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`Palilogy/UI/JobEditor/`)
 - [x] T008 Status + log capture: launchctl print polling, log file tail view (`Palilogy/UI/`)
 - [x] T009 Convert flow: cron entry to LaunchAgent, Converted badge, opt-in crontab clean-up setting (`Palilogy/UI/`)
-- [ ] T010 Settings window (theme setting per styling guide) done; remaining: app icon (Matt), light/dark visual verification (`Palilogy/Settings/`)
+- [ ] T010 Settings window and light/dark verification done; remaining: app icon (Matt) (`Palilogy/Settings/`)
 
 ---
 
