@@ -162,13 +162,22 @@ struct CronDetailView: View {
                     }
                 }
                 .confirmationDialog("Convert this cron entry?", isPresented: $confirmingConvert) {
-                    Button("Convert") {
-                        Task { await state.convert(entry) }
+                    if AppSettings.removeCronAfterConvert {
+                        Button("Convert") {
+                            Task { await state.convert(entry, removeFromCrontab: true) }
+                        }
+                    } else {
+                        Button("Convert") {
+                            Task { await state.convert(entry, removeFromCrontab: false) }
+                        }
+                        Button("Convert and Remove from Crontab") {
+                            Task { await state.convert(entry, removeFromCrontab: true) }
+                        }
                     }
                 } message: {
                     Text(AppSettings.removeCronAfterConvert
                         ? "A launchd job will be created and this line will be removed from your crontab."
-                        : "A launchd job will be created. The cron entry stays in your crontab and is marked Converted.")
+                        : "A launchd job will be created. Keep the cron entry (marked Converted) or remove its line from your crontab.")
                 }
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Schedule")
