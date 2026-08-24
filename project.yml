@@ -1,0 +1,48 @@
+name: Palilogy
+options:
+  bundleIdPrefix: com.inklinglabs
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+targets:
+  Palilogy:
+    type: application
+    platform: macOS
+    sources:
+      - Palilogy
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.inklinglabs.palilogy
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_FILE: Palilogy/Info.plist
+        GENERATE_INFOPLIST_FILE: false
+        ENABLE_APP_SANDBOX: false
+        ENABLE_HARDENED_RUNTIME: true
+        CODE_SIGN_STYLE: Automatic
+  PalilogyTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - PalilogyTests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: Palilogy
+schemes:
+  Palilogy:
+    build:
+      targets:
+        Palilogy: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - PalilogyTests
+    archive:
+      config: Release
