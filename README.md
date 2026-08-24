@@ -7,6 +7,8 @@
 Create, view, edit, and delete scheduled jobs on your Mac from a friendly
 native app.
 
+<img src="images/screenshot-main.png" alt="Palilogy's main window listing every scheduled job on the Mac" width="100%">
+
 ## The name
 
 **Palilogy** (pronounced *pa-LIL-uh-jee*) is a rhetorical device: the
@@ -38,6 +40,10 @@ twice.
   read-only. Any entry can be converted to an equivalent launchd job in
   one click, and you choose whether the original line stays or goes.
   Palilogy never creates or edits cron entries.
+
+<img src="images/screenshot-editor.png" alt="The job editor with interval, days-and-time, and cron schedule modes" width="100%">
+
+<img src="images/screenshot-cron.png" alt="A crontab entry shown read-only with Convert and Delete actions" width="100%">
 
 ## Why launchd
 
