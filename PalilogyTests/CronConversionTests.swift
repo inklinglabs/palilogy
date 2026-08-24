@@ -46,3 +46,15 @@ struct CrontabRemovalTests {
         #expect(CrontabService.removing(line: "0 * * * * /bin/x", from: "# empty\n") == nil)
     }
 }
+
+struct ConvertedFlagTests {
+    @Test func convertedOnlyWhileJobExists() {
+        let raw = "0 5 * * 1 /bin/a"
+        let mapping = [raw: "com.inklinglabs.palilogy.a"]
+        #expect(AppState.isConverted(
+            raw: raw, mapping: mapping, existingLabels: ["com.inklinglabs.palilogy.a"]
+        ))
+        #expect(!AppState.isConverted(raw: raw, mapping: mapping, existingLabels: []))
+        #expect(!AppState.isConverted(raw: raw, mapping: [:], existingLabels: ["com.inklinglabs.palilogy.a"]))
+    }
+}

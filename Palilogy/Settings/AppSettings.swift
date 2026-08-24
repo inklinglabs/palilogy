@@ -19,7 +19,8 @@ enum AppearanceOption: String, CaseIterable, Identifiable {
 enum AppSettings {
     static let appearanceKey = "appearance"
     static let removeCronAfterConvertKey = "removeCronAfterConvert"
-    static let convertedCronLinesKey = "convertedCronLines"
+    /// [raw crontab line: label of the job the conversion created].
+    static let convertedCronJobsKey = "convertedCronJobs"
 
     static var appearance: AppearanceOption {
         AppearanceOption(

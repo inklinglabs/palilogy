@@ -37,11 +37,12 @@ final class AppState {
     var lastError: String?
     /// Non-nil while the job editor sheet is up.
     var editorDraft: JobDraft?
-    /// Raw crontab lines already converted (only tracked when the entry
-    /// stays in the crontab). Persisted in UserDefaults.
-    private(set) var convertedCronLines: Set<String> = Set(
-        UserDefaults.standard.stringArray(forKey: AppSettings.convertedCronLinesKey) ?? []
-    )
+    /// Raw crontab line -> label of the job its conversion created. Only
+    /// tracked when the entry stays in the crontab; an entry counts as
+    /// converted only while that job still exists, so deleting the job
+    /// makes the entry convertible again. Persisted in UserDefaults.
+    private(set) var convertedCronJobs: [String: String] =
+        UserDefaults.standard.dictionary(forKey: AppSettings.convertedCronJobsKey) as? [String: String] ?? [:]
 
     private let launchd: LaunchdService
     private let crontab: CrontabService
@@ -49,6 +50,8 @@ final class AppState {
     init(launchd: LaunchdService = LaunchdService(), crontab: CrontabService = CrontabService()) {
         self.launchd = launchd
         self.crontab = crontab
+        // Pre-1.0 flag format: a bare set of lines with no job linkage.
+        UserDefaults.standard.removeObject(forKey: "convertedCronLines")
     }
 
     // MARK: - Loading
@@ -143,7 +146,14 @@ final class AppState {
     // MARK: - Conversion
 
     func isConverted(_ entry: CronEntry) -> Bool {
-        convertedCronLines.contains(entry.raw)
+        Self.isConverted(raw: entry.raw, mapping: convertedCronJobs, existingLabels: labelsInUse())
+    }
+
+    nonisolated static func isConverted(
+        raw: String, mapping: [String: String], existingLabels: Set<String>
+    ) -> Bool {
+        guard let label = mapping[raw] else { return false }
+        return existingLabels.contains(label)
     }
 
     func convert(_ entry: CronEntry, removeFromCrontab: Bool) async {
@@ -155,9 +165,9 @@ final class AppState {
             if removeFromCrontab {
                 try await self.crontab.removeEntry(entry)
             } else {
-                self.convertedCronLines.insert(entry.raw)
+                self.convertedCronJobs[entry.raw] = agent.label
                 UserDefaults.standard.set(
-                    Array(self.convertedCronLines), forKey: AppSettings.convertedCronLinesKey
+                    self.convertedCronJobs, forKey: AppSettings.convertedCronJobsKey
                 )
             }
             await self.refresh()
