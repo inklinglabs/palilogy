@@ -176,6 +176,14 @@ final class AppState {
         }
     }
 
+    func deleteCronEntry(_ entry: CronEntry) async {
+        await reportingErrors {
+            try await self.crontab.removeEntry(entry)
+            if self.selectedJobID == "cron-\(entry.id)" { self.selectedJobID = nil }
+            await self.refresh()
+        }
+    }
+
     // MARK: - Actions
 
     func toggle(_ file: AgentFile) async {

@@ -29,9 +29,10 @@ or why it failed.
 ## 3. Non-Goals
 
 - **Menu bar presence.** Excluded entirely per Matt, not backlogged.
-- **Managing cron as a backend.** Cron is read-only, with one opt-in
-  exception: a settings toggle (default off) lets Convert also remove the
-  converted line from the crontab. No other crontab writes exist.
+- **Managing cron as a backend.** Cron entries are never created or edited.
+  The only crontab writes are removals: deleting an entry, and removing a
+  just-converted line (per-convert choice, or always via a settings
+  toggle, default off).
 - **System agents/daemons (`/Library/LaunchAgents`, `/Library/LaunchDaemons`).**
   Root-owned, high blast radius, excluded from v1.
 - **Advanced launchd triggers (WatchPaths, Sockets, MachServices).** v1 is
@@ -110,7 +111,8 @@ can be represented there.
 - GIVEN a job whose command exits non-zero WHEN it runs THEN the job list
   shows the exit code and the detail pane shows the captured stderr.
 - GIVEN a crontab with at least one entry WHEN the app launches THEN the
-  entry appears under the Cron scope with no edit or delete controls.
+  entry appears under the Cron scope with no edit controls; delete is
+  offered behind a confirmation that quotes the exact line.
 - GIVEN a cron entry and the always-clean-up setting off (default) WHEN the
   user clicks Convert THEN the dialog offers "Convert" and "Convert and
   Remove from Crontab"; the first leaves the entry in the crontab marked
@@ -143,8 +145,8 @@ can be represented there.
 - At runtime: user crontab via `crontab -l`
 
 **Do not touch:**
-- The crontab, except removing a just-converted line when the clean-up
-  setting is on
+- The crontab, except line removals the user asked for (entry delete,
+  post-convert clean-up); never create or edit cron entries
 - `/Library/LaunchAgents`, `/Library/LaunchDaemons`, anything under `/System`
 - `main` branch, tags, releases (per CLAUDE.md)
 
