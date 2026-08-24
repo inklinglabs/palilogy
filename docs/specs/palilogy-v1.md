@@ -186,7 +186,7 @@ stops, delete it, confirm the plist is gone.
 - [x] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`Palilogy/UI/JobEditor/`)
 - [x] T008 Status + log capture: launchctl print polling, log file tail view (`Palilogy/UI/`)
 - [x] T009 Convert flow: cron entry to LaunchAgent, Converted badge, opt-in crontab clean-up setting (`Palilogy/UI/`)
-- [ ] T010 Settings window and light/dark verification done; remaining: app icon (Matt) (`Palilogy/Settings/`)
+- [x] T010 Settings window, light/dark verification, app icon (`Palilogy/Settings/`, `icons/`)
 
 ---
 
