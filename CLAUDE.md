@@ -10,7 +10,7 @@ Palilogy: Create, view, edit, and delete scheduled jobs on your Mac from a frien
 ## Standards
 
 This repo follows the Inkling Labs standards
-(github.com/mattlinebarger/inkling-labs-dev-standards, STANDARDS.md). The short version:
+(github.com/inklinglabs/inkling-labs-dev-standards, STANDARDS.md). The short version:
 
 - Work on `dev` or a feature branch. PRs into `dev` are fine.
 - Never push to `main`, merge into `main`, or push tags. Matt does those.
