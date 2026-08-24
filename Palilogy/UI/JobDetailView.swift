@@ -130,6 +130,7 @@ struct CronDetailView: View {
     @Environment(AppState.self) private var state
     var entry: CronEntry
     @State private var confirmingConvert = false
+    @State private var confirmingCronDelete = false
 
     var body: some View {
         ScrollView {
@@ -144,6 +145,16 @@ struct CronDetailView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 12) {
+                        if !state.isConverted(entry), entry.schedule != nil {
+                            Button("Convert to launchd Job") {
+                                confirmingConvert = true
+                            }
+                        }
+                        Button("Delete", role: .destructive) {
+                            confirmingCronDelete = true
+                        }
+                    }
                     if state.isConverted(entry) {
                         Text("Converted to a launchd job. The original entry is still in your crontab.")
                             .font(.caption)
@@ -153,13 +164,17 @@ struct CronDetailView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     } else {
-                        Button("Convert to launchd Job") {
-                            confirmingConvert = true
-                        }
-                        Text("Creates a job with the same command and schedule that also runs after your Mac wakes from sleep.")
+                        Text("Converting creates a job with the same command and schedule that also runs after your Mac wakes from sleep.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
+                }
+                .confirmationDialog("Delete this cron entry?", isPresented: $confirmingCronDelete) {
+                    Button("Delete from Crontab", role: .destructive) {
+                        Task { await state.deleteCronEntry(entry) }
+                    }
+                } message: {
+                    Text("This removes \"\(entry.raw)\" from your crontab. The job will not run again.")
                 }
                 .confirmationDialog("Convert this cron entry?", isPresented: $confirmingConvert) {
                     if AppSettings.removeCronAfterConvert {
