@@ -5,15 +5,15 @@ import Testing
 /// Records invocations and replays canned results, keyed by executable + first arg.
 final class MockRunner: CommandRunning, @unchecked Sendable {
     private let lock = NSLock()
-    private var _calls: [(executable: String, arguments: [String])] = []
+    private var _calls: [(executable: String, arguments: [String], stdin: String?)] = []
     var results: [String: CommandResult] = [:]
 
-    var calls: [(executable: String, arguments: [String])] {
+    var calls: [(executable: String, arguments: [String], stdin: String?)] {
         lock.withLock { _calls }
     }
 
-    func run(_ executable: String, _ arguments: [String]) async throws -> CommandResult {
-        lock.withLock { _calls.append((executable, arguments)) }
+    func run(_ executable: String, _ arguments: [String], stdin: String?) async throws -> CommandResult {
+        lock.withLock { _calls.append((executable, arguments, stdin)) }
         let key = ([executable] + arguments.prefix(1)).joined(separator: " ")
         return results[key] ?? CommandResult(exitCode: 0, stdout: "", stderr: "")
     }
@@ -168,5 +168,28 @@ struct LogReaderTests {
         #expect(tail.count <= 1024)
         #expect(tail.hasPrefix("line "))
         #expect(tail.hasSuffix(lines.last!))
+    }
+}
+
+struct CrontabWriteTests {
+    @Test func removeEntryInstallsViaStdin() async throws {
+        let runner = MockRunner()
+        runner.results["/usr/bin/crontab -l"] = CommandResult(
+            exitCode: 0, stdout: "0 5 * * 1 /bin/a\n0 6 * * 2 /bin/b\n", stderr: ""
+        )
+        let service = CrontabService(runner: runner)
+        let entry = CronEntry(
+            id: 1, scheduleExpression: "0 5 * * 1", command: "/bin/a", raw: "0 5 * * 1 /bin/a"
+        )
+        try await service.removeEntry(entry)
+        let install = try #require(runner.calls.last)
+        #expect(install.arguments == ["-"])
+        #expect(install.stdin == "0 6 * * 2 /bin/b\n")
+    }
+
+    @Test func processRunnerDeliversStdin() async throws {
+        let result = try await ProcessRunner().run("/bin/cat", [], stdin: "hello\nworld\n")
+        #expect(result.exitCode == 0)
+        #expect(result.stdout == "hello\nworld\n")
     }
 }
