@@ -4,21 +4,19 @@
 
 # Palilogy
 
-Create, view, edit, and delete scheduled jobs on your Mac from a friendly
-native app.
+*(pronounced pa-LIL-uh-jee)*
 
-<img src="images/screenshot-main.png" alt="Palilogy's main window listing every scheduled job on the Mac" width="100%">
-
-## The name
-
-**Palilogy** (pronounced *pa-LIL-uh-jee*) is a rhetorical device: the
-deliberate repetition of a word or phrase for emphasis. It comes from the
-Greek *palin* ("again," the same root as *palindrome*) and *-logia*
-("speaking"). Saying it again, on purpose, because it matters.
+Palilogy is a rhetorical device: the deliberate repetition of a word or
+phrase for emphasis. It comes from the Greek *palin* ("again," the same
+root as *palindrome*) and *-logia* ("speaking"). Saying it again, on
+purpose, because it matters.
 
 That is also exactly what a scheduled job is: a command your Mac repeats,
 deliberately, on a schedule you chose. Hence the icon, one shape said
-twice.
+twice. Create, view, edit, and delete scheduled jobs on your Mac from a
+friendly native app.
+
+<img src="images/screenshot-main.png" alt="Palilogy's main window listing every scheduled job on the Mac" width="100%">
 
 ## What it does
 
