@@ -52,11 +52,9 @@ actor CrontabService {
                 stderr: "The entry was not found; the crontab may have changed since it was read."
             )
         }
-        let tempFile = FileManager.default.temporaryDirectory
-            .appending(path: "palilogy-crontab-\(UUID().uuidString)")
-        try updated.write(to: tempFile, atomically: true, encoding: .utf8)
-        defer { try? FileManager.default.removeItem(at: tempFile) }
-        let write = try await runner.run(Self.crontab, [tempFile.path])
+        // Installed via stdin: crontab truncates a filename argument at 100
+        // characters (Vixie MAX_TEMPSTR), which temp-dir paths exceed.
+        let write = try await runner.run(Self.crontab, ["-"], stdin: updated)
         guard write.exitCode == 0 else {
             throw LaunchdError(operation: "crontab write", exitCode: write.exitCode, stderr: write.stderr)
         }
