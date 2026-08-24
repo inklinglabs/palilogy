@@ -103,4 +103,4 @@ xcodebuild -project Palilogy.xcodeproj -scheme Palilogy test
 
 MIT. See [LICENSE](LICENSE).
 
-Palilogy is an [Inkling Labs](https://github.com/mattlinebarger) project.
+Palilogy is an [Inkling Labs](https://www.inkling-labs.com) project.
