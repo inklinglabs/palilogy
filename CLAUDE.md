@@ -23,10 +23,12 @@ This repo follows the Inkling Labs standards
 
 ## Styling
 
-UI design language and Mac app patterns live in
-[docs/mac-app-styling.md](docs/mac-app-styling.md), based on Captain's Log
-(the reference implementation). Follow it for colors, typography, window
-layout, settings, and menu bar behavior. Bundle ID: `com.inklinglabs.palilogy`.
+UI design language and Mac app patterns live in the dev-standards repo at
+`docs/mac-app-styling.md` (locally
+`~/Development/inkling-labs/dev-standards/docs/mac-app-styling.md`), based
+on Captain's Log (the reference implementation). Follow it for colors,
+typography, window layout, settings, and menu bar behavior. Bundle ID:
+`com.inklinglabs.palilogy`.
 
 ## Commands
 
