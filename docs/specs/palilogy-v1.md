@@ -43,7 +43,8 @@ or why it failed.
 ## 4. Proposed Approach
 
 SwiftUI app, Swift 6 strict concurrency, XcodeGen `project.yml`, following
-the conventions and reference implementation in `docs/mac-app-styling.md`
+the Inkling Labs Mac app styling conventions (dev-standards repo,
+`docs/mac-app-styling.md`)
 (NavigationSplitView three-pane layout, AppState/AppSettings patterns, theme
 setting, grouped-form Settings window).
 
@@ -140,7 +141,7 @@ can be represented there.
 - At runtime: `~/Library/LaunchAgents/`, `~/Library/Logs/Palilogy/`
 
 **Read-only context:**
-- `docs/mac-app-styling.md`
+- Mac app styling conventions (dev-standards repo)
 - `.github/workflows/release.yml` (defines scheme/project names; do not edit)
 - At runtime: user crontab via `crontab -l`
 

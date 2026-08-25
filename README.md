@@ -90,8 +90,7 @@ Everything Palilogy does happens on your Mac; nothing is sent anywhere.
 ## Development
 
 Work happens on the `dev` branch; `main` is stable. The v1 design lives in
-[docs/specs/palilogy-v1.md](docs/specs/palilogy-v1.md), and UI conventions
-in [docs/mac-app-styling.md](docs/mac-app-styling.md).
+[docs/specs/palilogy-v1.md](docs/specs/palilogy-v1.md).
 
 ```
 xcodebuild -project Palilogy.xcodeproj -scheme Palilogy test
