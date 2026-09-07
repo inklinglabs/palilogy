@@ -176,18 +176,18 @@ stops, delete it, confirm the plist is gone.
 | ~~Minimum macOS version~~ Resolved: 14.0 | Matt, 2026-08-23 | No |
 | ~~Foreign agent editing~~ Resolved: enable/disable/delete only in v1, no editor | Matt, 2026-08-23 | No |
 
-## Task Breakdown
+## Acceptance checklist
 
-- [x] T001 XcodeGen scaffold: `project.yml`, app target Palilogy, bundle ID `com.inklinglabs.palilogy`, Swift 6, no sandbox, min macOS version (`project.yml`, `Palilogy/`)
-- [x] T002 Job model + LaunchAgent plist codec with round-trip tests (`Palilogy/Models/`)
-- [x] T003 [P] Cron expression parser to StartCalendarInterval/StartInterval with tests (`Palilogy/Models/CronParser.swift`)
-- [x] T004 [P] `LaunchdService` actor: list, bootstrap, bootout, kickstart, print parsing (`Palilogy/Services/LaunchdService.swift`)
-- [x] T005 [P] `CrontabService` actor: read and parse `crontab -l` (`Palilogy/Services/CrontabService.swift`)
-- [x] T006 AppState + three-pane main window: sidebar scopes (All, Enabled, Disabled, Cron), job list, detail pane per styling guide (`Palilogy/UI/`)
-- [x] T007 Job editor sheet: name, command, schedule picker + cron field, validation (`Palilogy/UI/JobEditor/`)
-- [x] T008 Status + log capture: launchctl print polling, log file tail view (`Palilogy/UI/`)
-- [x] T009 Convert flow: cron entry to LaunchAgent, Converted badge, opt-in crontab clean-up setting (`Palilogy/UI/`)
-- [x] T010 Settings window, light/dark verification, app icon (`Palilogy/Settings/`, `images/`)
+- [x] T001 XcodeGen scaffold: project.yml, app target, bundle ID, Swift 6, no sandbox, macOS 14.0
+- [x] T002 Job model and LaunchAgent plist codec with round-trip tests
+- [x] T003 Cron expression parser to StartCalendarInterval and StartInterval with tests
+- [x] T004 LaunchdService actor: list, bootstrap, bootout, kickstart, print parsing
+- [x] T005 CrontabService actor: read and parse crontab -l
+- [x] T006 AppState and three-pane main window with sidebar scopes, job list, detail pane
+- [x] T007 Job editor sheet: name, command, schedule picker, cron field, validation
+- [x] T008 Status polling and log file viewer
+- [x] T009 Convert flow: cron entry to LaunchAgent, Converted badge, opt-in crontab clean-up
+- [x] T010 Settings window, light and dark verification, app icon
 
 ---
 
