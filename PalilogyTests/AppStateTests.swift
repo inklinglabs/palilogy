@@ -56,3 +56,15 @@ struct AppStateFilterTests {
         #expect(AppState.filter(agents: [a], statuses: [:], scope: .enabled).isEmpty)
     }
 }
+
+struct UpdaterConfigTests {
+    @Test func updaterStaysOffWithoutPublicKey() {
+        #expect(!UpdaterManager.isConfigured(info: ["SUFeedURL": "https://example.com/a.xml", "SUPublicEDKey": ""]))
+        #expect(!UpdaterManager.isConfigured(info: ["SUFeedURL": "https://example.com/a.xml"]))
+        #expect(!UpdaterManager.isConfigured(info: [:]))
+    }
+
+    @Test func updaterOnWithFeedAndKey() {
+        #expect(UpdaterManager.isConfigured(info: ["SUFeedURL": "https://example.com/a.xml", "SUPublicEDKey": "abc="]))
+    }
+}

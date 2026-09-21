@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Palilogy</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -11,8 +13,6 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Palilogy</string>
-	<key>CFBundleDisplayName</key>
 	<string>Palilogy</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
@@ -28,5 +28,11 @@
 	<string>Copyright (c) 2026 Inkling Labs. MIT License.</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://github.com/inklinglabs/palilogy/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>gsKPzHew8410akjlCq8devpqQIEW3POBmQbtaDciGOc=</string>
 </dict>
 </plist>
