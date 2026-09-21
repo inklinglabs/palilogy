@@ -175,7 +175,7 @@ spctl -a -vv /Applications/Palilogy.app
 | Question | Resolved by | Blocks implementation? |
 |---|---|---|
 | ~~Sparkle 2.9.6 under Swift 6 strict concurrency~~ Resolved: compiles with a plain `import Sparkle`; ported classes are `@MainActor` | Implementation, 2026-09-21 | No |
-| What small change ships in 1.1.1? Proposed: a Reveal in Finder button beside a job's plist path. Matt can veto | Matt, before T011 | No |
+| ~~What ships in 1.1.1~~ Resolved: a Reveal in Finder button beside a job's plist path | Matt, 2026-09-21 | No |
 
 ## Security and Privacy
 
@@ -205,10 +205,10 @@ spctl -a -vv /Applications/Palilogy.app
 - [x] T004 Port debug snapshots and review the About window PNG
 - [x] T005 Port Sparkle steps into the release workflow with three-asset upload
 - [x] T006 Add the Sparkle secret script
-- [ ] T007 Matt runs the secret script to set SPARKLE_PRIVATE_KEY
+- [x] T007 Matt runs the secret script to set SPARKLE_PRIVATE_KEY
 - [x] T008 Write the releasing doc
 - [x] T009 Update README: download button, Sparkle note, source-build caveat
-- [ ] T010 Release 1.1.0 and verify assets, appcast, feed URL, notarization
+- [x] T010 Release 1.1.0 and verify assets, appcast, feed URL, notarization
 - [ ] T011 Release 1.1.1 and Matt sees 1.1.0 offer the update
 
 ---
