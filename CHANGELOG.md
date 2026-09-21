@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0 (2026-09-21)
+
+- Palilogy now updates itself through Sparkle. Check for Updates lives in
+  the Palilogy menu and in the new About window.
+- New About window with the version, Check for Updates, and a link to the
+  project on GitHub.
+- If you are on 1.0.0, download this version once by hand; every version
+  after it updates on its own.
+
 ## 1.0.0 (2026-08-24)
 
 First release.
