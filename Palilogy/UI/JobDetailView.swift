@@ -86,6 +86,11 @@ struct AgentDetailView: View {
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundStyle(.secondary)
                         .textSelection(.enabled)
+                    Button("Reveal in Finder") {
+                        NSWorkspace.shared.activateFileViewerSelecting([file.url])
+                    }
+                    .controlSize(.small)
+                    .padding(.top, 2)
                 }
                 LogView(agent: file.agent)
             }

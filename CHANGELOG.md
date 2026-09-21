@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 (2026-09-21)
+
+- Reveal in Finder: a job's detail pane now has a button that shows its
+  launchd file in Finder.
+
 ## 1.1.0 (2026-09-21)
 
 - Palilogy now updates itself through Sparkle. Check for Updates lives in
