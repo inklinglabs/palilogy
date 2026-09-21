@@ -4,6 +4,10 @@ options:
   deploymentTarget:
     macOS: "14.0"
   createIntermediateGroups: true
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: 2.9.6
 settings:
   base:
     SWIFT_VERSION: "6.0"
@@ -14,6 +18,8 @@ targets:
     platform: macOS
     sources:
       - Palilogy
+    dependencies:
+      - package: Sparkle
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.inklinglabs.palilogy
