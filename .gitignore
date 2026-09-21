@@ -22,3 +22,7 @@ xcuserdata/
 
 # XcodeGen output
 *.xcodeproj
+
+# Python
+__pycache__/
+*.pyc

@@ -1,0 +1,41 @@
+import Foundation
+import Sparkle
+
+/// Thin wrapper around Sparkle's standard updater (ported from Handybar).
+///
+/// The updater only starts when Info.plist carries both `SUFeedURL` and a
+/// non-empty `SUPublicEDKey`; without them Sparkle refuses to run and would
+/// show an error at launch, so such builds simply disable the feature.
+@MainActor
+final class UpdaterManager {
+
+    static let shared = UpdaterManager()
+
+    let isConfigured: Bool
+    private let controller: SPUStandardUpdaterController
+
+    private init() {
+        let info = Bundle.main.infoDictionary ?? [:]
+        // Never start the real updater inside the unit-test host.
+        let underTest = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+        isConfigured = Self.isConfigured(info: info) && !underTest
+        controller = SPUStandardUpdaterController(
+            startingUpdater: isConfigured, updaterDelegate: nil, userDriverDelegate: nil
+        )
+    }
+
+    nonisolated static func isConfigured(info: [String: Any]) -> Bool {
+        let feed = info["SUFeedURL"] as? String ?? ""
+        let key = info["SUPublicEDKey"] as? String ?? ""
+        return !feed.isEmpty && !key.isEmpty
+    }
+
+    var canCheckForUpdates: Bool {
+        isConfigured && controller.updater.canCheckForUpdates
+    }
+
+    func checkForUpdates() {
+        guard isConfigured else { return }
+        controller.checkForUpdates(nil)
+    }
+}

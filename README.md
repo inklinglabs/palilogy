@@ -62,9 +62,21 @@ exists so you never see either.
 
 ## Install
 
-Download the latest DMG from
-[Releases](https://github.com/mattlinebarger/palilogy/releases) and drag
-Palilogy to Applications.
+<p>
+  <a href="https://github.com/inklinglabs/palilogy/releases/latest/download/Palilogy.dmg">
+    <img src="https://img.shields.io/badge/Download-Palilogy.dmg-2ea44f?style=for-the-badge&logo=apple" alt="Download Palilogy">
+  </a>
+</p>
+
+Open the DMG and drag Palilogy to Applications. Requires macOS 14 (Sonoma)
+or later. Palilogy is free, signed with a Developer ID, and notarized by
+Apple.
+
+After that, Palilogy updates itself through
+[Sparkle](https://sparkle-project.org): it checks for a new version now and
+then, and **Palilogy > Check for Updates** checks on demand. Version 1.0.0
+shipped before the updater existed, so if you have it, download the current
+version once by hand.
 
 ### Build from source
 
@@ -73,12 +85,21 @@ Requires Xcode and [XcodeGen](https://github.com/yonaskolb/XcodeGen)
 
 ```
 xcodegen generate
-xcodebuild -project Palilogy.xcodeproj -scheme Palilogy -configuration Debug build
+xcodebuild -project Palilogy.xcodeproj -scheme Palilogy -configuration Debug build \
+  CODE_SIGN_IDENTITY="-" CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=""
 ```
+
+The signing overrides give you an ad-hoc signed build without needing an
+Apple developer certificate. A build you make yourself is not signed with
+the Inkling Labs Developer ID, so it will not update itself into an official
+release cleanly. That is expected; to move to an official build, download
+the DMG above.
 
 ## What it touches
 
-Everything Palilogy does happens on your Mac; nothing is sent anywhere.
+Everything Palilogy does with your jobs happens on your Mac. The only
+network traffic is the update check: Palilogy fetches its update feed and
+new versions from GitHub. It sends no information about you or your Mac.
 
 - `~/Library/LaunchAgents/`: reads all agents; writes only jobs you create
   or edit (marked with a `PalilogyManaged` key).
@@ -90,8 +111,7 @@ Everything Palilogy does happens on your Mac; nothing is sent anywhere.
 ## Development
 
 Work happens on the `dev` branch; `main` is stable. The v1 design lives in
-[docs/specs/palilogy-v1.md](docs/specs/palilogy-v1.md), and UI conventions
-in [docs/mac-app-styling.md](docs/mac-app-styling.md).
+[docs/specs/palilogy-v1.md](docs/specs/palilogy-v1.md).
 
 ```
 xcodebuild -project Palilogy.xcodeproj -scheme Palilogy test
