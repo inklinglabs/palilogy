@@ -50,7 +50,9 @@ hook in through `.commands` in `Palilogy/PalilogyApp.swift`. Swift 6 strict
 concurrency may require main-actor annotations on the ported files. Port the
 `HANDYBAR_SNAPSHOT_DIR` pattern from `DebugSnapshots.swift` as
 `PALILOGY_SNAPSHOT_DIR` (Debug builds only) so the About window can be
-rendered to PNG and reviewed.
+rendered to PNG and reviewed. Light appearance only, like Handybar's:
+offscreen caching does not render a dark window background. The updater
+also stays off inside the unit-test host so tests never touch the network.
 
 **Info.plist.** `SUFeedURL` =
 `https://github.com/inklinglabs/palilogy/releases/latest/download/appcast.xml`,
@@ -71,7 +73,8 @@ into `.github/workflows/release.yml`. Three things come across exactly:
 
 Then, in the same job, `generate_appcast` runs with `--download-url-prefix
 https://github.com/inklinglabs/palilogy/releases/download/v<version>/` and
-three assets are uploaded: `Palilogy-<version>.dmg`, `appcast.xml`, and
+three assets are uploaded (the job fails at its first step if
+`SPARKLE_PRIVATE_KEY` is missing, rather than shipping without an appcast): `Palilogy-<version>.dmg`, `appcast.xml`, and
 `Palilogy.dmg` (a byte copy with no version in the name). This replaces
 Handybar's publish-to-website step. The existing XcodeGen step stays.
 
@@ -171,8 +174,8 @@ spctl -a -vv /Applications/Palilogy.app
 
 | Question | Resolved by | Blocks implementation? |
 |---|---|---|
-| Does Sparkle 2.9.6 compile under Swift 6 strict concurrency without `@preconcurrency import`? | During implementation | No |
-| What small change ships in 1.1.1 so the proof release is not empty? | Matt, before T011 | No |
+| ~~Sparkle 2.9.6 under Swift 6 strict concurrency~~ Resolved: compiles with a plain `import Sparkle`; ported classes are `@MainActor` | Implementation, 2026-09-21 | No |
+| What small change ships in 1.1.1? Proposed: a Reveal in Finder button beside a job's plist path. Matt can veto | Matt, before T011 | No |
 
 ## Security and Privacy
 
@@ -196,15 +199,15 @@ spctl -a -vv /Applications/Palilogy.app
 
 ## Acceptance checklist
 
-- [ ] T001 Add Sparkle 2 package and Info.plist keys
-- [ ] T002 Port UpdaterManager and the Check for Updates menu item
-- [ ] T003 Port the About window with Check for Updates and the repo link
-- [ ] T004 Port debug snapshots and review the About window PNG
-- [ ] T005 Port Sparkle steps into the release workflow with three-asset upload
-- [ ] T006 Add the Sparkle secret script
+- [x] T001 Add Sparkle 2 package and Info.plist keys
+- [x] T002 Port UpdaterManager and the Check for Updates menu item
+- [x] T003 Port the About window with Check for Updates and the repo link
+- [x] T004 Port debug snapshots and review the About window PNG
+- [x] T005 Port Sparkle steps into the release workflow with three-asset upload
+- [x] T006 Add the Sparkle secret script
 - [ ] T007 Matt runs the secret script to set SPARKLE_PRIVATE_KEY
-- [ ] T008 Write the releasing doc
-- [ ] T009 Update README: download button, Sparkle note, source-build caveat
+- [x] T008 Write the releasing doc
+- [x] T009 Update README: download button, Sparkle note, source-build caveat
 - [ ] T010 Release 1.1.0 and verify assets, appcast, feed URL, notarization
 - [ ] T011 Release 1.1.1 and Matt sees 1.1.0 offer the update
 
