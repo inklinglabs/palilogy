@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct PalilogyApp: App {
-    @State private var appState = AppState()
+    @State private var appState = DemoMode.makeAppState()
 
     var body: some Scene {
         WindowGroup {
@@ -11,7 +11,7 @@ struct PalilogyApp: App {
                 .onAppear {
                     AppSettings.applyAppearance()
                     #if DEBUG
-                    DebugSnapshots.runIfRequested()
+                    DebugSnapshots.runIfRequested(appState: appState)
                     #endif
                 }
         }
