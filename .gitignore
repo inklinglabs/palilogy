@@ -26,3 +26,6 @@ xcuserdata/
 # Python
 __pycache__/
 *.pyc
+
+# Design sources
+*.sketch
