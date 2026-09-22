@@ -13,8 +13,11 @@ purpose, because it matters.
 
 That is also exactly what a scheduled job is: a command your Mac repeats,
 deliberately, on a schedule you chose. Hence the icon, one shape said
-twice. Create, view, edit, and delete scheduled jobs on your Mac from a
-friendly native app.
+twice.
+
+Palilogy schedules jobs on your Mac. Name a command, pick a time, and it
+writes the launchd agent, loads it, and shows you whether it ran. It also
+lists everything else already scheduled on your Mac, including your crontab.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="images/screen-jobs-dark.png">
