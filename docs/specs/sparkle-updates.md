@@ -209,7 +209,7 @@ spctl -a -vv /Applications/Palilogy.app
 - [x] T008 Write the releasing doc
 - [x] T009 Update README: download button, Sparkle note, source-build caveat
 - [x] T010 Release 1.1.0 and verify assets, appcast, feed URL, notarization
-- [ ] T011 Release 1.1.1 and Matt sees 1.1.0 offer the update
+- [x] T011 Release 1.1.1 and Matt sees 1.1.0 offer the update
 
 ---
 

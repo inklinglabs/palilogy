@@ -11,16 +11,21 @@ final class UpdaterManager {
 
     static let shared = UpdaterManager()
 
+    /// Info.plist has a feed and a key; drives whether the UI offers updates.
     let isConfigured: Bool
+    /// The updater actually started.
+    private let isActive: Bool
     private let controller: SPUStandardUpdaterController
 
     private init() {
         let info = Bundle.main.infoDictionary ?? [:]
-        // Never start the real updater inside the unit-test host.
+        isConfigured = Self.isConfigured(info: info)
+        // Never start the real updater inside the unit-test host or in demo
+        // mode; those builds must not reach the network or offer updates.
         let underTest = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-        isConfigured = Self.isConfigured(info: info) && !underTest
+        isActive = isConfigured && !underTest && !DemoMode.isActive
         controller = SPUStandardUpdaterController(
-            startingUpdater: isConfigured, updaterDelegate: nil, userDriverDelegate: nil
+            startingUpdater: isActive, updaterDelegate: nil, userDriverDelegate: nil
         )
     }
 
@@ -31,11 +36,11 @@ final class UpdaterManager {
     }
 
     var canCheckForUpdates: Bool {
-        isConfigured && controller.updater.canCheckForUpdates
+        isActive && controller.updater.canCheckForUpdates
     }
 
     func checkForUpdates() {
-        guard isConfigured else { return }
+        guard isActive else { return }
         controller.checkForUpdates(nil)
     }
 }

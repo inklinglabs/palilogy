@@ -13,10 +13,16 @@ purpose, because it matters.
 
 That is also exactly what a scheduled job is: a command your Mac repeats,
 deliberately, on a schedule you chose. Hence the icon, one shape said
-twice. Create, view, edit, and delete scheduled jobs on your Mac from a
-friendly native app.
+twice.
 
-<img src="images/screenshot-main.png" alt="Palilogy's main window listing every scheduled job on the Mac" width="100%">
+Palilogy schedules jobs on your Mac. Name a command, pick a time, and it
+writes the launchd agent, loads it, and shows you whether it ran. It also
+lists everything else already scheduled on your Mac, including your crontab.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/screen-jobs-dark.png">
+  <img src="images/screen-jobs-light.png" alt="Palilogy's main window: every scheduled job on the Mac, with the selected job's status, schedule, and log output" width="100%">
+</picture>
 
 ## What it does
 
@@ -39,9 +45,15 @@ friendly native app.
   one click, and you choose whether the original line stays or goes.
   Palilogy never creates or edits cron entries.
 
-<img src="images/screenshot-editor.png" alt="The job editor with interval, days-and-time, and cron schedule modes" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/screen-editor-dark.png">
+  <img src="images/screen-editor-light.png" alt="The job editor, with interval, days and time, and cron schedule modes" width="100%">
+</picture>
 
-<img src="images/screenshot-cron.png" alt="A crontab entry shown read-only with Convert and Delete actions" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/screen-cron-dark.png">
+  <img src="images/screen-cron-light.png" alt="Crontab entries listed read only, each with Convert and Delete actions" width="100%">
+</picture>
 
 ## Why launchd
 

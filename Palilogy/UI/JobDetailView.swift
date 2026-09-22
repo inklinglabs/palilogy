@@ -82,7 +82,7 @@ struct AgentDetailView: View {
                     Text(file.agent.schedule?.displayText ?? "Runs on demand")
                 }
                 field("File") {
-                    Text(file.url.path)
+                    Text(DemoMode.displayPath(file.url.path))
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundStyle(.secondary)
                         .textSelection(.enabled)

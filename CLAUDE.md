@@ -55,9 +55,15 @@ typography, window layout, settings, and menu bar behavior. Bundle ID:
 
 - This Mac has no Mac Development certificate. Local builds need
   `CODE_SIGN_IDENTITY="-" CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=""`.
-- Debug builds only: `PALILOGY_SNAPSHOT_DIR=/some/dir` opens the About
-  window, writes a PNG of it, and quits (light appearance only). Run the
-  built binary directly with that variable set.
+- Debug builds only: `PALILOGY_DEMO=1` runs the app on invented jobs
+  (`Palilogy/Debug/DemoMode.swift`). Fixtures live in the app's Caches
+  folder; launchctl, crontab, and the updater are never touched. Use it for
+  any screenshot that leaves this Mac.
+- Debug builds only: `PALILOGY_SNAPSHOT_DIR=/some/dir` implies demo mode,
+  steps through the main screens in light and dark, writes a PNG of each
+  window, and quits. Run the built binary directly with that variable set.
+  For layout review only: Liquid Glass (sidebar, toolbar) does not render
+  offscreen, so the sidebar comes out blank.
 
 ## Specs and Todoist
 
