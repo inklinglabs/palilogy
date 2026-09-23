@@ -5,7 +5,9 @@ repository.
 
 ## What this is
 
-Palilogy: Create, view, edit, and delete scheduled jobs on your Mac from a friendly native app.
+Palilogy schedules jobs on your Mac. Name a command, pick a time, and it
+writes the launchd agent, loads it, and shows you whether it ran. It also
+lists everything else already scheduled on your Mac, including your crontab.
 
 ## Standards
 
