@@ -36,7 +36,7 @@ only DMG URL contains a version number.
 
 ## 4. Proposed Approach
 
-Port from Handybar (`~/Development/inkling-labs/projects/handybar`) instead
+Port from Handybar (`~/Developer/inkling-labs/projects/handybar`) instead
 of rebuilding from memory. Differences from Handybar are called out.
 
 **App.** Sparkle 2.9.6 via Swift Package Manager, declared in `project.yml`
@@ -141,7 +141,7 @@ will not update into a signed release.
 - `README.md`, `CHANGELOG.md`, `CLAUDE.md`
 
 **Read-only context:**
-- `~/Development/inkling-labs/projects/handybar` (port source; ignore Lemon
+- `~/Developer/inkling-labs/projects/handybar` (port source; ignore Lemon
   Squeezy, license keys, keychain, website publishing)
 
 **Do not touch:**
@@ -157,14 +157,14 @@ If this spec conflicts with an ad-hoc prompt, this spec wins.
 Local builds on this Mac need ad-hoc signing (no Mac Development cert):
 
 ```bash
-cd ~/Development/inkling-labs/projects/palilogy && xcodegen generate
-cd ~/Development/inkling-labs/projects/palilogy && xcodebuild -project Palilogy.xcodeproj -scheme Palilogy test CODE_SIGN_IDENTITY="-" CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=""
+cd ~/Developer/inkling-labs/projects/palilogy && xcodegen generate
+cd ~/Developer/inkling-labs/projects/palilogy && xcodebuild -project Palilogy.xcodeproj -scheme Palilogy test CODE_SIGN_IDENTITY="-" CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=""
 ```
 
 After each tagged release:
 
 ```bash
-cd ~/Development/inkling-labs/projects/palilogy && gh release view v1.1.0 --json isDraft,isPrerelease,assets
+cd ~/Developer/inkling-labs/projects/palilogy && gh release view v1.1.0 --json isDraft,isPrerelease,assets
 curl -sIL https://github.com/inklinglabs/palilogy/releases/latest/download/appcast.xml | grep -i '^HTTP'
 curl -sL https://github.com/inklinglabs/palilogy/releases/latest/download/appcast.xml | grep -E 'sparkle:(version|edSignature)|enclosure url'
 spctl -a -vv /Applications/Palilogy.app
